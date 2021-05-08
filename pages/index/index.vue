@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<v-tabs v-model="current" :tabs="tabs" @change="changeTab" class="tab"></v-tabs>
+		<v-tabs v-model="current" :tabs="tabs" @change="changeTab" class="tab" v-show='false'></v-tabs>
 		<view class="coupon" ref="coupon">
 			<view class="item" v-for="(v, i) in couponList" @click="toCoupon(i)" :key="i">
 				<view class="top">
@@ -36,26 +36,6 @@
 						icon: '/static/ele.png',
 						text: '饿了么',
 						tabId: 1,
-					},
-					// {
-					// 	icon: '/static/meituan.png',
-					// 	text: '美团',
-					// 	tabId: 2,
-					// },
-					// {
-					// 	icon: '/static/11.png',
-					// 	text: '双十一',
-					// 	tabId: 5,
-					// },
-					// {
-					// 	icon: '/static/jd.png',
-					// 	text: '京东',
-					// 	tabId: 3,
-					// },
-					{
-						icon: '/static/vip.png',
-						text: 'VIP会员',
-						tabId: 2,
 					}
 				],
 				couponList: [],
@@ -68,9 +48,8 @@
 						tabId: 1,
 						minapp: {
 							appid: 'wxece3a9a4c82f58c9',
-							// path: 'ele-recommend-price/pages/guest/index?chInfo=ch_wechat_chsub_Card&_ltracker_f=&inviterId=cce7965'
 							path: 'ele-recommend-price/pages/guest/index?inviterId=cce7965&chInfo=ch_wechat_chsub_CopyLink&_ltracker_f=tjyj1_wx_banner3'
-							
+
 						}
 					}, {
 						name: '瑞幸咖啡',
@@ -89,15 +68,15 @@
 						bannerPic: '/static/coupon/11.jpg',
 						url: 'https://qm.qq.com/cgi-bin/qm/qr?k=3INdUgev7ldsYycZ2K4kwdDXZb48Tcma&jump_from=webapi',
 						type: 1,
-						tabId: 2,
+						tabId: 1,
 						qun: true
-					},{
+					}, {
 						name: '羊毛群',
 						icon: '/static/yangmao.jpg',
 						bannerPic: '/static/coupon/yangmaos.jpg',
 						url: 'http://note.youdao.com/noteshare?id=c8cdf4bf2521219ad56f70dbc42eaae2',
 						type: 1,
-						tabId: 2,
+						tabId: 1,
 						qun: true
 					},
 				]
@@ -155,14 +134,14 @@
 			toCoupon(i) {
 				console.log(this.couponList[i])
 				if (this.couponList[i].qun) {
-				  wx.setClipboardData({
-					data: this.couponList[i].url,
-					success: function (res) {
-					  wx.showModal({
-						title: '邀请码已复制，粘贴到浏览器并打开',
-					  })
-					}
-				  });
+					wx.setClipboardData({
+						data: this.couponList[i].url,
+						success: function(res) {
+							wx.showModal({
+								title: '邀请码已复制，粘贴到浏览器并打开',
+							})
+						}
+					});
 				}
 				//h5
 				//#ifdef H5
@@ -203,8 +182,6 @@
 		}
 
 		.coupon {
-			padding-top: 200rpx;
-
 			.item {
 				background-color: #ffffff;
 				margin: 30rpx;
@@ -232,7 +209,7 @@
 							display: inline-block;
 							vertical-align: bottom;
 							width: 52rpx;
-							height: auto; 	
+							height: auto;
 						}
 
 						.name {
