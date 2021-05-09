@@ -1,10 +1,35 @@
 {
 	"pages": [{
 		"path": "pages/index/index"
-
 	}, {
-		"path": "pages/index/router"
+		"path": "pages/index/details"
+	}, {
+		"path": "pages/my/index"
+	}, {
+		"path": "pages/vip/index"
 	}],
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/all2.png",
+			"selectedIconPath": "static/all2.png",
+			"text": "干货"
+		}, {
+			"pagePath": "pages/vip/index",
+			"iconPath": "static/VIPka.png",
+			"selectedIconPath": "static/VIPka.png",
+			"text": "VIP"
+		}, {
+			"pagePath": "pages/my/index",
+			"iconPath": "static/my.png",
+			"selectedIconPath": "static/my.png",
+			"text": "我的"
+		}]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "外卖、羊毛专享优惠",
