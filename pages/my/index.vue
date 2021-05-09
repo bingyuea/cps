@@ -1,5 +1,6 @@
 <template>
   <view class="content">
+      <image src = '/static/k/my.jfif' mode="aspectFit"></image>
       <button  type="primary" class="primary" @click="bindLogin">加油！干饭人</button>
   </view>
 </template>
@@ -14,16 +15,18 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
 .content {
-  background: url('/static/k/my.jfif')  no-repeat center ;
-  background-size:cover ;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
+  image{
+    height: 100%;
+    width: 100%;
+  }
 }
 
 uni-button[type=primary] {
-  margin: 0 4%;
+  margin: 0 5%;
   background-image: linear-gradient(to top, #66b7f9,#1c82d4);
 }
 
