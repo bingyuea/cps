@@ -1,9 +1,9 @@
 <template>
   <view class="container">
     <view class="item" v-for="(v, i) in details" :key="i" @click="toDetails(v)">
-      <view class='title text'>{{ v.title }}</view>
-      <view class='desc text'>{{ v.desc }}</view>
-      <image v-if="v.images && v.images[0]" :src='v.images[0]'></image>
+      <view class='text title '>{{ v.title }}</view>
+      <view class='text desc '>{{ v.desc }}</view>
+      <image v-if="v.images && v.images[0]" :src='`https://images.weserv.nl/?url=${v.images[0]}`'></image>
       <view class='text author'>{{ v.author }}</view>
       <view class='text createdAt'>{{ v.createdAt }}</view>
     </view>
@@ -13,29 +13,24 @@
 <script>
 
 export default {
-  name: "index",
+  name: 'details',
   data() {
     return {
-      details:[]
+      details: []
     }
   },
-  methods: {
-    toDetails(v) {
-
-    }
-  },
-  onload(e) {
+  onLoad(e) {
     let type = e.type
     let category = e.category
     // https://gank.io/api/v2/data/category/GanHuo/type/Android/page/1/count/10
     uni.request({
-      url: this.$api + `categories/${category}/type/${type}/page/1/count/50`,
+      url: this.$api + `data/category/${category}/type/${type}/page/1/count/50`,
       header: {
         'content-type': 'application/x-www-form-urlencoded' //自定义请求头信息
       },
       success: (res) => {
-        console.log(res)
-        this.details = res.data.data || []
+        console.log(res.data.data)
+        this.details = res.data.data
       }
     });
   }
@@ -53,48 +48,77 @@ page {
 
   .item {
     background-color: #ffffff;
-    margin: 30 rpx;
-    border-radius: 10 rpx;
-    padding: 30 rpx;
+    margin: 30rpx;
+    border-radius: 10rpx;
+    padding: 30rpx;
 
     image {
       width: 100%;
     }
 
-    .text {
+
+    .title {
       width: 100%;
       line-height: 1.5;
       word-wrap: break-word;
       font-size: 12px;
+      background: linear-gradient(to right, #000000
+      ,
+      #434343);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
-    .title {
-      background: linear-gradient(to right, #bdc3c7, #2c3e50);
-    }
-
     .desc {
+
+      width: 100%;
+      line-height: 1.5;
+      word-wrap: break-word;
+      font-size: 12px;
       background: linear-gradient(to right,
           #2980b9,
           #6dd5fa
       );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .author {
+
+      width: 100%;
+      line-height: 1.5;
+      word-wrap: break-word;
+      font-size: 12px;
       background: linear-gradient(to right,
-          #c9ffbf,
-          #ffafbd
+          #59c173
+          ,
+          #a17fe0
+          ,
+          #5d26c1
       );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .createdAt {
+
+      width: 100%;
+      line-height: 1.5;
+      word-wrap: break-word;
+      font-size: 12px;
       background: linear-gradient(to right,
           #525252,
           #3d72b4
       );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
+
+
   }
 }
 </style>

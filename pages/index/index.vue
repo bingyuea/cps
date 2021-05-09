@@ -2,8 +2,8 @@
   <view class="container">
     <v-tabs v-model="current" :tabs="tabs" class="tab" @change="changeTab"></v-tabs>
     <view class = 'coupon'>
-    <view class="item" v-for="(v, i) in couponList" @click="toCoupon(v)" :key="i">
-      <image v-if='v.coverImageUrl' :src="v.coverImageUrl" mode="widthFix"></image>
+    <view class="item" v-for="(v, i) in couponList" @click="toCoupon(v.type)" :key="i">
+      <image v-if='v.coverImageUrl' :src="v.coverImageUrl" mode="aspectFit"></image>
       <view class='text'>{{ v.desc }}</view>
     </view>
     </view>
@@ -35,17 +35,13 @@ export default {
     this.changeTab(this.current)
   },
   methods: {
-    toCoupon(i) {
-      console.log(i)
-
-
+    toCoupon(type) {
+      console.log(type)
       uni.navigateTo({
-        url: `/pages/index/details?category=${this.tabs[this.current].tabId}type=${i.type}`
+        url: `/pages/index/details?category=${this.tabs[this.current].tabId}&type=${type}`
       })
     },
     changeTab(index) {
-      console.log('当前选中的项：' + index)
-      console.log('当前选中的项：' + this.tabs[index].tabId)
       this.current = index
       this.couponList = CouponList[this.tabs[index].tabId]
     }
