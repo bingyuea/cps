@@ -29,16 +29,16 @@
     </view>
 
     <!-- 底部聊天输入框 -->
-    <view class="input-box2" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+    <view class="input-box2" :class="popupLayerClass" >
       <view class="voice">
-        <image src="/static/voice.png" style="width: 60rpx;height: 60rpx"></image>
+        <image src="/static/voice.png" @click="discard" style="width: 60rpx;height: 60rpx"></image>
       </view>
       <view class="textbox">
         <!-- <view class="voice-mode" :class="[isVoice?'':'hidden',recording?'recording':'']" @touchstart="voiceBegin" @touchmove.stop.prevent="voiceIng" @touchend="voiceEnd" @touchcancel="voiceCancel">{{voiceTis}}</view> -->
         <view class="text-mode">
           <view class="box">
-            <editor id="editor" class="ql-container" placeholder=" " :show-img-size="true" @ready="onEditorReady"></editor>
-            <!-- <textarea auto-height="true" v-model="formData.content" @focus="textareaFocus"/> -->
+<!--            <editor id="editor" class="ql-container" placeholder=" " :show-img-size="true" @ready="onEditorReady"></editor>-->
+             <textarea auto-height="true" v-model="formData.content" @focus="textareaFocus"/>
           </view>
           <view class="em" @click="chooseEmoji">
             <image src="/static/biaoqing.png" style="width: 60rpx;height: 60rpx"></image>
@@ -46,12 +46,15 @@
         </view>
       </view>
       <!-- 功能性按钮 -->
-      <view class="flex u-p-l-20" @click="switchFun">
+      <view class="flex u-p-l-20" @click="switchFun" class = 'send' style = 'display: flex;
+    align-items: center;
+    width: 100rpx;
+    justify-content: center;'>
         <image src="/static/send.png" style="width: 60rpx;height: 60rpx" color="#ff6a00"></image>
       </view>
     </view>
     <!-- 抽屉栏 -->
-    <view class="popup-layer" :class="popupLayerClass" @touchmove.stop.prevent="discard">
+    <view class="popup-layer" :class="popupLayerClass">
       <!-- 表情 -->
       <view class="emoji-swiper" :class="{hidden:hideEmoji}">
         <scroll-view scroll-y="true" style="height: 300rpx;">
@@ -222,7 +225,11 @@ export default {
       },150);
     },
     discard(){
-      return;
+      console.log('点击')
+      wx.showModal({
+        title: '秘密',
+        content: '大声点，我听不到！',
+      })
     },
     //获取焦点，如果不是选表情ing,则关闭抽屉
     textareaFocus(){
@@ -278,8 +285,8 @@ export default {
           arr.unshift({
             hasBeenSentId: i, //已发送过去消息的id
             content: `很高兴认识你，这是第${i + 1}条消息。`,
-            fromUserHeadImg: isItMe ? this._user_info.headImg : this.fromUserInfo.fromUserHeadImg, //用户头像
-            fromUserId: isItMe ? this._user_info.id : this.fromUserInfo.fromUserId,
+            fromUserHeadImg: isItMe ? this.user_info.headImg : this.fromUserInfo.fromUserHeadImg, //用户头像
+            fromUserId: isItMe ? this.user_info.id : this.fromUserInfo.fromUserId,
             isItMe, //true此条信息是我发送的 false别人发送的
             createTime: Date.now(),
             contentType: 1, // 1文字文本 2语音
@@ -311,20 +318,20 @@ export default {
     // 点击选择表情
     chooseEmoji(){
       this.hideMore = true;
-      if(this.hideEmoji){
-        this.hideEmoji = false;
-        this.openDrawer();
-      }else{
-        this.hideDrawer();
-      }
+      // if(this.hideEmoji){
+      //   this.hideEmoji = false;
+      //   this.openDrawer();
+      // }else{
+      //   this.hideDrawer();
+      // }
     },
     //发送消息
     sendMsg(data) {
       const params = {
         hasBeenSentId: Date.now(), //已发送过去消息的id
         content: this.formData.content,
-        fromUserHeadImg: this._user_info.headImg, //用户头像
-        fromUserId: this._user_info.id,
+        fromUserHeadImg: this.user_info.headImg, //用户头像
+        fromUserId: this.user_info.id,
         isItMe: true, //true此条信息是我发送的  false别人发送的
         createTime: Date.now(),
         contentType: 1
@@ -342,10 +349,83 @@ export default {
           params.content = data.content;
           params.contentType = data.contentType;
         }
-      } else if (!this.$u.trim(this.formData.content)) {
-        //验证输入框书否为空字符传
-        return;
       }
+      if (!this.formData.content) return
+      console.log(params)
+      this.invokeService(this.formData.content)
+      this.messageList.push(params);
+      this.$nextTick(() => {
+        this.formData.content = '';
+        // #ifdef MP-WEIXIN
+        if(params.contentType == 1){
+          uni.pageScrollTo({
+            scrollTop: 99999,
+            duration: 0, //小程序如果有滚动效果 input的焦点也会随着页面滚动...
+          });
+        }else{
+          setTimeout(()=>{
+            uni.pageScrollTo({
+              scrollTop: 99999,
+              duration: 0, //小程序如果有滚动效果 input的焦点也会随着页面滚动...
+            });
+          },150)
+        }
+        // #endif
+
+        // #ifndef MP-WEIXIN
+        uni.pageScrollTo({
+          scrollTop: 99999,
+          duration: 100
+        });
+        // #endif
+
+        if(this.showFunBtn){
+          this.showFunBtn = false;
+        }
+
+        // #ifdef MP-WEIXIN
+        if (params.contentType == 1) {
+          this.mpInputMargin = true;
+        }
+        // #endif
+        //h5浏览器并没有很好的办法控制键盘一直处于唤起状态 而且会有样式性的问题
+        // #ifdef H5
+        uni.hideKeyboard();
+        // #endif
+      });
+    },
+    invokeService(data){
+      wx.serviceMarket.invokeService({
+        service: 'wxcae50ba710ca29d3', // 'wx_mp_appid',
+        api: 'thumbupbot',
+        data: {
+          "q": data, // 需要夸的内容
+        },
+      }).then(res => {
+        console.log('invokeService success', res)
+        this.sendMsg2(res.data.data_list[0].result || '你说的啥，我听不到！')
+      }).catch(err => {
+        console.error('invokeService fail', err)
+        wx.showModal({
+          title: 'fail',
+          content: err + '',
+        })
+      })
+    },
+    sendMsg2(msg) {
+      console.log(msg)
+      const params = {
+        hasBeenSentId: Date.now(), //已发送过去消息的id
+        content: msg,
+        fromUserHeadImg:  "/static/head2.png", //用户头像
+        fromUserId: 1,
+        isItMe: false, //true此条信息是我发送的  false别人发送的
+        createTime: Date.now(),
+        contentType: 1
+      };
+
+      if (!msg) return
+      console.log(params)
 
       this.messageList.push(params);
 
@@ -612,7 +692,7 @@ export default {
     // #endif
     // 动态设置当前页面的标题。
     uni.setNavigationBarTitle({
-      title: '咨询'
+      title: '没人夸，就自己夸'
     });
 
   }
@@ -626,6 +706,7 @@ page {
 .hidden{
   display: none !important;
 }
+
 .content {
   &-showfn{
     padding-bottom: 0rpx;
