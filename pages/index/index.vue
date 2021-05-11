@@ -23,10 +23,10 @@ export default {
           text: '文章',
           tabId: 'Article',
         },
-        {
-          text: '赏心悦目',
-          tabId: 'Girl',
-        }
+        // {
+        //   text: '赏心悦目',
+        //   tabId: 'Girl',
+        // }
       ],
       couponList: [],
     }
