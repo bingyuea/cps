@@ -53,15 +53,6 @@
 						}
 					},
           {
-            name: '羊毛群',
-            icon: '/static/yangmao.jpg',
-            bannerPic: '/static/coupon/yangmaos.jpg',
-            url: 'https://mp.weixin.qq.com/s?__biz=MjM5OTQ2NTA3MQ==&mid=2247483729&idx=3&sn=79eb20ff793e2b6c901fd0be8c5ecbac&chksm=a73a5851904dd147e49871bb339401f4430bd4f5d4077406823a2092c78f599ade4465972b0e&scene=126&sessionid=1621049976&key=e792d5b1c972f508a1cbbdfc28d930629cdcbc18263b2c0046b0fd5cd712a291fda8643cf3de5dfa0ab773726d89a064a1d0bf285c4c938c2095fbab9013093023c18efbfcd150cc0c939f8ee1326e74a9eea451aff3e7991671fca88d3db0dad4dcf1dc9cd78088ecc88b44ba2524387edd16776aa51824f2c298cd33e8defc&ascene=1&uin=ODQzNzczNjAx&devicetype=Windows+10+x64&version=63020197&lang=zh_CN&exportkey=AfYgfKHgydeJxj2iwStCuT8%3D&pass_ticket=X2U%2BdZYbNE7NFfyuVEwOAv8m2StCPMk5r03jHQ2XEels3jhDXDRDKoWOfTJOVvdy&wx_header=0',
-            type: 1,
-            tabId: 1,
-            qun: true
-          },
-          {
             name: '优惠券',
             icon: '/static/quan.png',
             bannerPic: '/static/coupon/11.jpg',
